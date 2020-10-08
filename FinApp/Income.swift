@@ -9,12 +9,7 @@ import Foundation
 
 class Income {
     
-    var amount = ""
+    var amount = String()
     var date = Date()
-    
-    init(_ amount: String) {
-        self.amount = amount
-    }
-    
-    
+
 }
