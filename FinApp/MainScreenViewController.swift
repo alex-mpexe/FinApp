@@ -6,15 +6,32 @@
 //
 
 import UIKit
+import RealmSwift
+
+
+class User: Object {
+    
+    
+    @objc dynamic var moneySumm = Int()
+}
 
 class MainScreenViewController: UIViewController {
     
+    var isUserCreated = false
+    
+    private let realm = try! Realm()
     var incomeData: [Income] = []
     
-    var isShown = false
+    var isTapped = false
+    
     var moneySumm = 0 {
         didSet {
             currentMoneyBalance.text = "\(String(moneySumm)) Р"
+            
+            try! realm.write {
+                let user = getUser()
+                user.moneySumm = moneySumm
+            }
         }
     }
 
@@ -26,12 +43,34 @@ class MainScreenViewController: UIViewController {
     @IBOutlet weak var addIncomeButton: UIButton!
     @IBOutlet weak var shadowLockView: UIView!
     
+    func getUser() -> User{
+        let user = realm.objects(User.self).map {$0}[0]
+        
+        return user
+    }
+    
+    func createUser(){
+        
+        let user = User()
+        
+        try! realm.write {
+            realm.add(user)
+            isUserCreated = true
+        }
+    }
+    
     
     func saveIncome(withSumm summ: String) {
         let income = Income()
         income.amount = summ
         incomeData.append(income)
         moneySumm += Int(summ)!
+        
+        incomeTable.reloadData()
+        
+        try! realm.write {
+            realm.add(income)
+        }
     }
     
     func parseDate(withDate date: Date) -> String {
@@ -44,40 +83,40 @@ class MainScreenViewController: UIViewController {
         return stringDate
     }
     
+    func changeState(){
+        summTextField.isHidden = !summTextField.isHidden
+        shadowLockView.isHidden = !shadowLockView.isHidden
+    }
+    
     @IBAction func addIncomeAction(_ sender: Any) {
         if summTextField.isHidden {
-            summTextField.isHidden = false
-            shadowLockView.isHidden = false
+            changeState()
             summTextField.becomeFirstResponder()
-            
-            
         } else {
             if summTextField.text == "" {
-                summTextField.isHidden = true
-                shadowLockView.isHidden = true
+                changeState()
                 summTextField.resignFirstResponder()
             }else {
-                summTextField.isHidden = true
-                shadowLockView.isHidden = true
                 summTextField.resignFirstResponder()
                 
                 let newSumm = summTextField.text
                 saveIncome(withSumm: newSumm!)
-                incomeTable.reloadData()
-                
+                changeState()
                 summTextField.text = ""
             }
-            
-            
-            
-            
         }
-        
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !isUserCreated { createUser() }
+        
+        incomeData = realm.objects(Income.self).map {$0}
+        let user = getUser()
+        moneySumm = user.moneySumm
+        
         addIncomeButton.layer.cornerRadius = 20
         currentMoneyBalance.text = "\(String(moneySumm)) Р"
         addTapGestureToHideKeyboard()
@@ -98,7 +137,7 @@ class MainScreenViewController: UIViewController {
     
     @objc func tapGesture() {
         summTextField.resignFirstResponder()
-        shadowLockView.isHidden = true
+        isTapped = true
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -110,9 +149,7 @@ class MainScreenViewController: UIViewController {
                                      y: self.view.frame.origin.y,
                                      width: self.view.frame.width,
                                      height: window!.origin.y + window!.height - keyboardSize.height + 50)
-        } else {
-            debugPrint("We're showing the keyboard and either the keyboard size or window is nil: panic widely.")
-        }
+        } else {}
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
@@ -122,9 +159,7 @@ class MainScreenViewController: UIViewController {
                                      y: self.view.frame.origin.y,
                                      width: self.view.frame.width,
                                      height: viewHeight + keyboardSize.height - 50)
-        } else {
-            debugPrint("We're about to hide the keyboard and the keyboard size is nil. Now is the rapture.")
-        }
+        } else {}
     }
     
 

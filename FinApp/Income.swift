@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Income {
+class Income: Object {
     
-    var amount = String()
-    var date = Date()
+    @objc dynamic var amount = String()
+    @objc dynamic var date = Date()
 
 }
