@@ -10,8 +10,6 @@ import RealmSwift
 
 
 class User: Object {
-    
-    
     @objc dynamic var moneySumm = Int()
 }
 
@@ -45,20 +43,20 @@ class MainScreenViewController: UIViewController {
     
     func getUser() -> User{
         let user = realm.objects(User.self).map {$0}[0]
-        
         return user
     }
     
+    // MARK: User Creation
+    
     func createUser(){
-        
         let user = User()
-        
         try! realm.write {
             realm.add(user)
             isUserCreated = true
         }
     }
     
+    // MARK: Save Income Function
     
     func saveIncome(withSumm summ: String) {
         let income = Income()
@@ -88,6 +86,8 @@ class MainScreenViewController: UIViewController {
         shadowLockView.isHidden = !shadowLockView.isHidden
     }
     
+    // MARK: Add Income Button function
+    
     @IBAction func addIncomeAction(_ sender: Any) {
         if summTextField.isHidden {
             changeState()
@@ -107,6 +107,7 @@ class MainScreenViewController: UIViewController {
         }
     }
     
+    // MARK: ViewDidLoad function
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,6 +131,8 @@ class MainScreenViewController: UIViewController {
         
     }
 
+    // MARK: Keyboard functions
+    
     func addTapGestureToHideKeyboard() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
         view.addGestureRecognizer(tapGesture)
@@ -139,6 +142,7 @@ class MainScreenViewController: UIViewController {
         summTextField.resignFirstResponder()
         isTapped = true
     }
+    
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
@@ -164,6 +168,8 @@ class MainScreenViewController: UIViewController {
     
 
 }
+
+// MARK: Extention for Table View
 
 extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
