@@ -61,7 +61,7 @@ class MainScreenViewController: UIViewController {
     func saveIncome(withSumm summ: String) {
         let income = Income()
         income.amount = summ
-        incomeData.append(income)
+        incomeData.insert(income, at: 0)
         moneySumm += Int(summ)!
         
         incomeTable.reloadData()
@@ -107,6 +107,10 @@ class MainScreenViewController: UIViewController {
         }
     }
     
+    deinit {
+        removeKeyboardNotifications()
+    }
+    
     // MARK: ViewDidLoad function
     
     override func viewDidLoad() {
@@ -120,18 +124,40 @@ class MainScreenViewController: UIViewController {
         
         addIncomeButton.layer.cornerRadius = 20
         currentMoneyBalance.text = "\(String(moneySumm)) Р"
-        addTapGestureToHideKeyboard()
+        
         incomeTable.delegate = self
         incomeTable.dataSource = self
+        
+        addTapGestureToHideKeyboard()
+        
+        
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(animated)
         
         NotificationCenter.default.addObserver(self, selector: #selector(MainScreenViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(MainScreenViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super .viewWillDisappear(animated)
+        removeKeyboardNotifications()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.dismiss(animated: true, completion: nil)
     }
 
     // MARK: Keyboard functions
+    
+    func removeKeyboardNotifications(){
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
     
     func addTapGestureToHideKeyboard() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.tapGesture))
