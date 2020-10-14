@@ -18,6 +18,7 @@
 		8A9A6987252DEFFD000C9F64 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A9A6985252DEFFD000C9F64 /* LaunchScreen.storyboard */; };
 		8A9A699E252E06B1000C9F64 /* IncomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9A699D252E06B1000C9F64 /* IncomeTableViewCell.swift */; };
 		8A9A69A1252E075B000C9F64 /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9A69A0252E075B000C9F64 /* Income.swift */; };
+		8AD0D8FE2535E925005A31A5 /* CostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0D8FD2535E925005A31A5 /* CostCell.swift */; };
 		F0DE625523044EFB1CBA9EB3 /* Pods_FinApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9AE6806452C900D95071EC /* Pods_FinApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		8A9A6988252DEFFD000C9F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A9A699D252E06B1000C9F64 /* IncomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IncomeTableViewCell.swift; path = FinApp/IncomeTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		8A9A69A0252E075B000C9F64 /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
+		8AD0D8FD2535E925005A31A5 /* CostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostCell.swift; sourceTree = "<group>"; };
 		A06737AD493298233C5D9950 /* Pods-FinApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinApp.release.xcconfig"; path = "Target Support Files/Pods-FinApp/Pods-FinApp.release.xcconfig"; sourceTree = "<group>"; };
 		C1992845C839F950F725BE94 /* Pods-FinApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinApp.debug.xcconfig"; path = "Target Support Files/Pods-FinApp/Pods-FinApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -99,6 +101,7 @@
 				8A9A697C252DEFF9000C9F64 /* SceneDelegate.swift */,
 				8A9A6980252DEFF9000C9F64 /* Main.storyboard */,
 				8A694B492534A1E600089BF7 /* DetailCostVC.swift */,
+				8AD0D8FD2535E925005A31A5 /* CostCell.swift */,
 				8A694B462534874200089BF7 /* CategoryTableViewCell.swift */,
 				8A9A6983252DEFFD000C9F64 /* Assets.xcassets */,
 				8A9A6985252DEFFD000C9F64 /* LaunchScreen.storyboard */,
@@ -231,6 +234,7 @@
 				8A694B442534660200089BF7 /* CostsMainScreenVC.swift in Sources */,
 				8A9A697F252DEFF9000C9F64 /* MainScreenViewController.swift in Sources */,
 				8A694B4A2534A1E600089BF7 /* DetailCostVC.swift in Sources */,
+				8AD0D8FE2535E925005A31A5 /* CostCell.swift in Sources */,
 				8A9A697B252DEFF9000C9F64 /* AppDelegate.swift in Sources */,
 				8A9A699E252E06B1000C9F64 /* IncomeTableViewCell.swift in Sources */,
 				8A694B472534874200089BF7 /* CategoryTableViewCell.swift in Sources */,

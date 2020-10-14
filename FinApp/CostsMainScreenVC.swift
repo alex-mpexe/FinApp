@@ -16,16 +16,6 @@ class Category: Object {
     
 }
 
-class Cost: Object {
-    
-    @objc dynamic var name = String()
-    @objc dynamic var date = Date()
-    @objc dynamic var summ = Int()
-    @objc dynamic var category = String()
-    
-        
-}
-
 // #MARK: ViewController
 
 class CostsMainScreenVC: UIViewController {
@@ -64,9 +54,6 @@ class CostsMainScreenVC: UIViewController {
         addCategoryButton.layer.cornerRadius = 20
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
-        
-        
-        
     }
     
     // #MARK: - Save Category func
@@ -75,7 +62,7 @@ class CostsMainScreenVC: UIViewController {
         try! realm.write {
             category.name = name
             realm.add(category)
-            categoryList.insert(category, at: 0)
+            categoryList.append(category)
         }
         categoryTableView.reloadData()
     }
@@ -83,8 +70,11 @@ class CostsMainScreenVC: UIViewController {
     // #MARK: - Remove Category func
     func removeCategory(withCategory category: Category){
         
+        let categoryCosts = realm.objects(Cost.self).filter("category = '\(category.name)'")
+        
         try! realm.write {
             realm.delete(category)
+            realm.delete(categoryCosts)
         }
         
     }
@@ -137,7 +127,7 @@ class CostsMainScreenVC: UIViewController {
             self.view.frame = CGRect(x: self.view.frame.origin.x,
                                      y: self.view.frame.origin.y,
                                      width: self.view.frame.width,
-                                     height: window!.origin.y + window!.height - keyboardSize.height + 50)
+                                     height: window!.origin.y + window!.height - keyboardSize.height)
         } else {}
     }
 
@@ -147,7 +137,7 @@ class CostsMainScreenVC: UIViewController {
             self.view.frame = CGRect(x: self.view.frame.origin.x,
                                      y: self.view.frame.origin.y,
                                      width: self.view.frame.width,
-                                     height: viewHeight + keyboardSize.height - 50)
+                                     height: viewHeight + keyboardSize.height)
         } else {}
     }
     
@@ -161,12 +151,16 @@ class CostsMainScreenVC: UIViewController {
         super.viewDidLoad()
         baseSettings()
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
         registerForKeyBoardNotifications()
         loadFromChache()
+        navigationController?.isNavigationBarHidden = true
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        setCustomTitle()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -174,13 +168,12 @@ class CostsMainScreenVC: UIViewController {
         removeKeyboardNotifications()
     }
     
-    // #MARK: - Segue func
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? DetailCostVC {
-            let categoryName = categoryList[selectedRow].name
-            destination.categoryName = categoryName
-        }
+    func setCustomTitle() {
+        let navFont = UIFont.systemFont(ofSize: 25, weight: UIFont.Weight.bold)
+        let navFontAttributes = [NSAttributedString.Key.font : navFont]
+        UINavigationBar.appearance().titleTextAttributes = navFontAttributes
     }
+
     
 
 }
@@ -209,8 +202,18 @@ extension CostsMainScreenVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedRow = indexPath.row
-        performSegue(withIdentifier: "detailCost", sender: self)
+        
+        categoryTableView.deselectRow(at: indexPath, animated: true)
+        
+        guard let vc = storyboard?.instantiateViewController(identifier: "detailCategory") as? DetailCostVC else {
+            return
+        }
+        vc.title = categoryList[indexPath.row].name
+        vc.category = categoryList[indexPath.row].name
+        
+        navigationController?.pushViewController(vc, animated: true)
+        
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
