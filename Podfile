@@ -7,6 +7,7 @@ target 'FinApp' do
 
   # Pods for FinApp
   pod 'RealmSwift'
+  pod 'Charts'
 
 end
 
