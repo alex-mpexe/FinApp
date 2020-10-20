@@ -11,6 +11,9 @@ import RealmSwift
 class Income: Object {
     
     @objc dynamic var amount = String()
-    @objc dynamic var date = Date()
+    @objc dynamic var date = String()
+    
+    
+    
 
 }

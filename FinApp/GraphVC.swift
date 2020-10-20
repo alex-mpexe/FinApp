@@ -20,42 +20,76 @@ private class ChartDataFormatter: IAxisValueFormatter {
     init(dataPoints: [String]) {
         self.data = dataPoints
     }
-    
-    
 }
 
-class ChartPoint {
-    var summ = Int()
-    var dateString = String()
-    var date = Date()
+class Point {
     
-    init(summ: Int, dateString: String) {
-        let truncDate = dateString.split(separator: ".")
-        self.dateString = "\(truncDate[0]).\(truncDate[1])"
-        self.summ = summ
-        self.date = self.fromStringToDate(stringDate: dateString)
+    enum PointType {
+        case income
+        case cost
     }
     
-    func fromStringToDate(stringDate: String) -> Date {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM"
-        if let date = dateFormatter.date(from: stringDate) {
-            return date
-        } else {return Date()}
+    var moneySumm: Int?
+    var date: String?
+    var rawDate: Date?
+    var pointType: PointType?
+    
+    init(moneySumm: Int, date: String, type: PointType){
+        self.moneySumm = moneySumm
+        self.date = date
+        self.pointType = type
+    }
+    
+    func prepareIncomeDate(){
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "dd MMMM yyyy"
+        let incomeDate = formatter.date(from: self.date!)
+        self.rawDate = incomeDate
+        formatter.dateFormat = "dd.MM"
+        let correctDate = formatter.string(from: incomeDate!)
+        self.date = correctDate
+    }
+    
+    func prepareCostDate(){
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "dd.MM.yyyy"
+        let incomeDate = formatter.date(from: self.date!)
+        self.rawDate = incomeDate
+        formatter.dateFormat = "dd.MM"
+        let correctDate = formatter.string(from: incomeDate!)
+        self.date = correctDate
     }
 }
 
-class GraphVC: UIViewController {
+class GraphVC: UIViewController, ChartViewDelegate {
 
+// #MARK: Base variables
+    private let realm = try! Realm()
+    enum PointType {
+        case income
+        case cost
+    }
     
-    // #MARK: Outlets
+    var incomeRealmData: Results<Income>?
+    var costsRealmData: Results<Cost>? {didSet {createPoints(incomeData: incomeRealmData!, costData: costsRealmData!)}}
+    var chartPoints: [Point] = [] {
+        didSet {
+            lineChartView.xAxis.valueFormatter = ChartDataFormatter(dataPoints: chartPoints.map {$0.date!})
+        }
+    }
+    var chartEntryDataSet: [ChartDataEntry] = []
+    
+    
+// #MARK: Outlets
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var weekButton: UIButton!
     @IBOutlet weak var monthButton: UIButton!
     @IBOutlet weak var quarterButton: UIButton!
     @IBOutlet weak var allButton: UIButton!
     
-    // #MARK: Sort button actions
+// #MARK: Sort button actions
     @IBAction func weekButtonPressed(_ sender: Any) {
     }
     @IBAction func monthButtonPressed(_ sender: Any) {
@@ -65,36 +99,10 @@ class GraphVC: UIViewController {
     @IBAction func allDatesButtonPressed(_ sender: Any) {
     }
     
-    // #MARK: Base variables
-    private let realm = try! Realm()
-    
-    var costRealmData: [Cost] = [] {
-        didSet { createCostPoint(withData: costRealmData) }
-    }
-    var incomeRealmData: [Income] = []
-    var chartCostPoints: [ChartPoint] = [] {
-        didSet { lineChartView.xAxis.valueFormatter = ChartDataFormatter(dataPoints: chartCostPoints.map {$0.dateString}) }
-    }
-    var chartIncomePoints: [ChartPoint] = []
-    
-    var costEntryDataSet: [ChartDataEntry] = []
-    var costDataSet = LineChartDataSet()
-    var costData = LineChartData()
-    
-    enum DateRange {
-        case week
-        case month
-        case quarter
-        case all
-    }
-    
-    enum PointType {
-        case cost
-        case income
-    }
     
     
-    // #MARK: Base settings method
+    
+// #MARK: Base settings method
     func baseSettings() {
         weekButton.layer.cornerRadius = 12
         monthButton.layer.cornerRadius = 12
@@ -104,60 +112,110 @@ class GraphVC: UIViewController {
         lineChartView.xAxis.labelPosition = .bottom
         lineChartView.rightAxis.enabled = false
         lineChartView.legend.enabled = false
-        lineChartView.xAxis.valueFormatter = ChartDataFormatter(dataPoints: chartCostPoints.map {$0.dateString})
+        lineChartView.xAxis.valueFormatter = ChartDataFormatter(dataPoints: chartPoints.map {$0.date!})
         
         
     }
     
-    // #MARK: Loading data from chache
-    func loadDataFromChache() {
-        costRealmData = realm.objects(Cost.self).map {$0}
+// #MARK: Loading data from chache
+    func loadDataFromCache() {
+        incomeRealmData = realm.objects(Income.self)
+        costsRealmData = realm.objects(Cost.self)
     }
     
-    // #MARK: Creating ChartPoint list
-    func createCostPoint(withData data: [Cost]) {
-        let dateList = Set(data.map {$0.date})
-        var points: [ChartPoint] = []
-        for date in dateList {
-            let datePayments = realm.objects(Cost.self).filter("date = '\(date)'").map {$0.summ}
-            var summ = 0
-            for payment in datePayments { summ += payment }
-            let point = ChartPoint(summ: summ, dateString: date)
-            points.append(point)
+// #MARK: Creating ChartPoint list
+    func createPoints(incomeData: Results<Income>, costData: Results<Cost>) {
+        var points: [Point] = []
+        
+        // income data
+        let incomeDates = Set(incomeData.map {$0.date})
+        for date in incomeDates {
+            var moneySumm = 0
+            let incomeFromDate = realm.objects(Income.self).filter("date = '\(date)'").map {$0}
+            if incomeFromDate.count != 0 {
+                for income in incomeFromDate { moneySumm += Int(income.amount)! }
+                let incomePoint = Point(moneySumm: moneySumm, date: date, type: .income)
+                incomePoint.prepareIncomeDate()
+                points.append(incomePoint)
+            }
         }
-        chartCostPoints = points
-        chartCostPoints = chartCostPoints.sorted(by: {
-            let date1 = $0.fromStringToDate(stringDate: $0.dateString)
-            let date2 = $1.fromStringToDate(stringDate: $1.dateString)
-            return date1.compare(date2) == .orderedAscending
+        
+        // cost data
+        let costDates = Set(costData.map {$0.date})
+        for date in costDates {
+            let costFromDate = costData.filter("date = '\(date)'").map {$0}
+            if costFromDate.count != 0 {
+                var moneySumm = 0
+                for cost in costFromDate {
+                    moneySumm += cost.summ
+                }
+                let costPoint = Point(moneySumm: moneySumm, date: date, type: .cost)
+                costPoint.prepareCostDate()
+                points.append(costPoint)
+            }
+        }
+    
+        chartPoints = points.sorted(by: {
+                    let date1 = $0.rawDate!
+                    let date2 = $1.rawDate!
+                    return date1.compare(date2) == .orderedAscending
         })
     }
+ 
+// #MARK: Update Charts data
     
     func updateChart() {
+        var costDataEntry: [ChartDataEntry] = []
+        var incomeDataEntry: [ChartDataEntry] = []
         
-        // Updating cost data
-        costEntryDataSet = (0..<chartCostPoints.count).map { (i) -> ChartDataEntry in
-            return ChartDataEntry(x: Double(i), y: Double(chartCostPoints[i].summ))
+        for (index, point) in chartPoints.enumerated() {
+            switch point.pointType {
+            case .cost:
+                let entry = ChartDataEntry(x: Double(index), y: Double(point.moneySumm!))
+                costDataEntry.append(entry)
+    
+            case .income:
+                let entry = ChartDataEntry(x: Double(index), y: Double(point.moneySumm!))
+                incomeDataEntry.append(entry)
+            case .none:
+                return
+            }
         }
-        costDataSet = LineChartDataSet(entries: costEntryDataSet, label: "Расходы")
-        costData = LineChartData(dataSet: costDataSet)
-        costDataSet.setColor(.red)
-        costDataSet.circleColors = [UIColor(ciColor: .red)]
-        self.lineChartView.data = costData
+        let chartData = LineChartData()
+        let incomeLine = LineChartDataSet(entries: incomeDataEntry, label: "Расходы")
+        incomeLine.setColor(.green)
+        incomeLine.circleColors = [UIColor(ciColor: .green)]
+        chartData.addDataSet(incomeLine)
+        let costLine = LineChartDataSet(entries: costDataEntry, label: "Доходы")
+        costLine.setColor(.red)
+        costLine.circleColors = [UIColor(ciColor: .red)]
+        chartData.addDataSet(costLine)
         
+        self.lineChartView.data = chartData
+        
+    }
+    
+// MARK: Parse Date Func
+    func parseDate(withDate date: Date?) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "dd.MM"
+        let stringDate = "\(formatter.string(from: date!))"
+        return stringDate
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        costRealmData = realm.objects(Cost.self).map {$0}
         baseSettings()
-        
-        
+        loadDataFromCache()
+        self.lineChartView.delegate = self
+        updateChart()
+        self.lineChartView.notifyDataSetChanged()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
-        costRealmData = realm.objects(Cost.self).map {$0}
+        loadDataFromCache()
         updateChart()
     }
 

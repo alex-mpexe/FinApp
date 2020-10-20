@@ -60,7 +60,9 @@ class MainScreenViewController: UIViewController {
     
     func saveIncome(withSumm summ: String) {
         let income = Income()
+        let date = Date()
         income.amount = summ
+        income.date = parseDate(withDate: date)
         incomeData.insert(income, at: 0)
         moneySumm += Int(summ)!
         
@@ -76,7 +78,7 @@ class MainScreenViewController: UIViewController {
         formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateFormat = "dd MMMM yyyy"
         
-        let stringDate = "\(formatter.string(from: date))г."
+        let stringDate = "\(formatter.string(from: date))"
         
         return stringDate
     }
@@ -206,7 +208,7 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = incomeTable.dequeueReusableCell(withIdentifier: "incomeCell", for: indexPath) as! IncomeTableViewCell
         
         cell.incomeTableLabel.text = "+ \(incomeData[indexPath.row].amount) Р"
-        cell.dateTableLabel.text = parseDate(withDate: incomeData[indexPath.row].date)
+        cell.dateTableLabel.text = "\(incomeData[indexPath.row].date)г."
         
         return cell
     }

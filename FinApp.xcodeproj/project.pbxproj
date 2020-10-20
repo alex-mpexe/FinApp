@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8A62998925371363008C962E /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62998825371363008C962E /* GraphView.swift */; };
 		8A62998E253722CE008C962E /* GraphVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62998D253722CE008C962E /* GraphVC.swift */; };
 		8A694B442534660200089BF7 /* CostsMainScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A694B432534660200089BF7 /* CostsMainScreenVC.swift */; };
 		8A694B472534874200089BF7 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A694B462534874200089BF7 /* CategoryTableViewCell.swift */; };
@@ -26,7 +25,6 @@
 
 /* Begin PBXFileReference section */
 		2A9AE6806452C900D95071EC /* Pods_FinApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A62998825371363008C962E /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		8A62998D253722CE008C962E /* GraphVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphVC.swift; sourceTree = "<group>"; };
 		8A694B432534660200089BF7 /* CostsMainScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostsMainScreenVC.swift; sourceTree = "<group>"; };
 		8A694B462534874200089BF7 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 			isa = PBXGroup;
 			children = (
 				8A9A69A0252E075B000C9F64 /* Income.swift */,
-				8A62998825371363008C962E /* GraphView.swift */,
 				8A9A697E252DEFF9000C9F64 /* MainScreenViewController.swift */,
 				8A694B432534660200089BF7 /* CostsMainScreenVC.swift */,
 				8A9A697A252DEFF9000C9F64 /* AppDelegate.swift */,
@@ -234,7 +231,6 @@
 				8A694B4A2534A1E600089BF7 /* DetailCostVC.swift in Sources */,
 				8AD0D8FE2535E925005A31A5 /* CostCell.swift in Sources */,
 				8A9A697B252DEFF9000C9F64 /* AppDelegate.swift in Sources */,
-				8A62998925371363008C962E /* GraphView.swift in Sources */,
 				8A9A699E252E06B1000C9F64 /* IncomeTableViewCell.swift in Sources */,
 				8A694B472534874200089BF7 /* CategoryTableViewCell.swift in Sources */,
 				8A9A69A1252E075B000C9F64 /* Income.swift in Sources */,
