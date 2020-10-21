@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-// #MARK: Realm Models
+// MARK: Realm Category Model
 
 class Category: Object {
     
@@ -16,7 +16,7 @@ class Category: Object {
     
 }
 
-// #MARK: ViewController
+// MARK: CostsMainScreenVC
 
 class CostsMainScreenVC: UIViewController {
 
@@ -25,7 +25,7 @@ class CostsMainScreenVC: UIViewController {
     @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var shadowLockView: UIView!
     
-    // #MARK: - Base Variables
+    // MARK: Base Variables
     private let realm = try! Realm()
     var categoryList: [Category] = []
     var isTapped = false
@@ -37,7 +37,7 @@ class CostsMainScreenVC: UIViewController {
         case normal
     }
     
-    // #MARK: - Change state func
+    // MARK: Change state func
     func changeState(withState state: WindowState) {
         switch state {
         case .editing:
@@ -49,14 +49,14 @@ class CostsMainScreenVC: UIViewController {
         }
     }
     
-    // #MARK: - Base Settings
+    // MARK: Base Settings
     func baseSettings() {
         addCategoryButton.layer.cornerRadius = 20
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
     }
     
-    // #MARK: - Save Category func
+    // MARK: Save Category func
     func saveCategory(withName name: String) {
         let category = Category()
         try! realm.write {
@@ -67,7 +67,7 @@ class CostsMainScreenVC: UIViewController {
         categoryTableView.reloadData()
     }
     
-    // #MARK: - Remove Category func
+    // MARK: Remove Category func
     func removeCategory(withCategory category: Category){
         
         let categoryCosts = realm.objects(Cost.self).filter("category = '\(category.name)'")
@@ -76,16 +76,15 @@ class CostsMainScreenVC: UIViewController {
             realm.delete(category)
             realm.delete(categoryCosts)
         }
-        
     }
     
     
-    // #MARK: - Load data from Chache
-    func loadFromChache() {
+    // MARK: Load data from Cache
+    func loadFromCache() {
         categoryList = realm.objects(Category.self).map {$0}
     }
     
-    // #MARK: - Category Button Action
+    // MARK: Category Button Action
     @IBAction func addCategoryButtonAction(_ sender: Any) {
         
         if categoryTextField.isHidden {
@@ -141,23 +140,21 @@ class CostsMainScreenVC: UIViewController {
         } else {}
     }
     
-    // #MARK: - Deinit method
+    // MARK: Deinit method
     deinit {
         removeKeyboardNotifications()
     }
     
-    // #MARK: - ViewDidLoad func
+    // MARK: ViewController methods
     override func viewDidLoad() {
         super.viewDidLoad()
         baseSettings()
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
         registerForKeyBoardNotifications()
-        loadFromChache()
+        loadFromCache()
         navigationController?.isNavigationBarHidden = true
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         setCustomTitle()
@@ -168,17 +165,16 @@ class CostsMainScreenVC: UIViewController {
         removeKeyboardNotifications()
     }
     
+    // MARK: Custom title for NavBar
     func setCustomTitle() {
         let navFont = UIFont.systemFont(ofSize: 25, weight: UIFont.Weight.bold)
         let navFontAttributes = [NSAttributedString.Key.font : navFont]
         UINavigationBar.appearance().titleTextAttributes = navFontAttributes
     }
 
-    
-
 }
 
-// #MARK: TableView extension
+// MARK: TableView extension
 
 extension CostsMainScreenVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

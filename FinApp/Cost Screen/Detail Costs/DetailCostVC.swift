@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-// #MARK: Realm Models
+// MARK: Realm Cost Model
 class Cost: Object {
     
     @objc dynamic var name = String()
@@ -18,10 +18,10 @@ class Cost: Object {
     
 }
 
+// MARK: DetailCostVC class
 class DetailCostVC: UIViewController {
 
-// #MARK: Outlets
-    
+    // MARK: Outlets
     @IBOutlet weak var paymentGraphButton: UIButton!
     @IBOutlet weak var paymentTable: UITableView!
     @IBOutlet weak var plusPaymentButton: UIButton!
@@ -31,8 +31,7 @@ class DetailCostVC: UIViewController {
     @IBOutlet weak var addPaymentButton: UIButton!
     @IBOutlet weak var shadowLockView: UIView!
     
-// #MARK: Base variables
-    
+    // MARK: Base variables
     var category = String()
     private let realm = try! Realm()
     var costList: [Cost] = []
@@ -42,8 +41,7 @@ class DetailCostVC: UIViewController {
         case normal
     }
 
-// #MARK: IBActions
-    
+    // MARK: IBActions
     @IBAction func plusPaymentButtonPressen(_ sender: Any) {
         // Plus button action
         changeState(withState: .editing)
@@ -51,7 +49,6 @@ class DetailCostVC: UIViewController {
     
     @IBAction func addPaymentButtonPressen(_ sender: Any) {
         // Button "Добавить расход" action
-
         if paymentNameTextField.text == ""{
             changeState(withState: .normal)
         } else if paymentSummTextField.text == "" {
@@ -64,7 +61,6 @@ class DetailCostVC: UIViewController {
             changeState(withState: .normal)
         }
     }
-    
     @IBAction func graphPaymentButtonPressen(_ sender: Any) {
         // Button "График платежей" action
         guard let vc = storyboard?.instantiateViewController(identifier: "categoryChart") as? CategoryChartCostVC else {
@@ -74,7 +70,7 @@ class DetailCostVC: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-// #MARK: Base Settings
+    // MARK: Base Settings
     func baseSettings() {
         plusPaymentButton.layer.cornerRadius = 25
         paymentGraphButton.layer.cornerRadius = 20
@@ -86,7 +82,7 @@ class DetailCostVC: UIViewController {
         paymentTable.dataSource = self
     }
     
-// #MARK: Change state func
+    // MARK: Change state func
     func changeState(withState state: WindowState) {
         switch state {
         case .editing:
@@ -113,7 +109,7 @@ class DetailCostVC: UIViewController {
         }
     }
     
-// MARK: Parse Date Func
+    // MARK: Parse Date Func
     func parseDate(withDate date: Date?, datepicker: UIDatePicker?) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
@@ -130,7 +126,7 @@ class DetailCostVC: UIViewController {
         return stringDate
     }
     
-// MARK: Load from chache
+    // MARK: Load from chache
     func loadDataFromChache(){
         costList = realm.objects(Cost.self).filter("category = '\(category)'").sorted(by: {
             let date1 = fromStringToDate(stringDate: $0.date)
@@ -148,7 +144,7 @@ class DetailCostVC: UIViewController {
         } else {return Date()}
     }
     
-// MARK: Save data func
+    // MARK: Save data func
     func saveData(paymentName: String, paymentSumm: String, paymentDate: String){
         let cost = Cost()
         cost.name = paymentName
@@ -170,7 +166,7 @@ class DetailCostVC: UIViewController {
         paymentTable.reloadData()
     }
 
-// #MARK: - Remove Cost func
+    // MARK: Remove Cost func
     func removeCost(withCost cost: Cost){
         
         try! realm.write {
@@ -179,7 +175,7 @@ class DetailCostVC: UIViewController {
         
     }
     
-// MARK: Keyboard functions
+    // MARK: Keyboard functions
     func registerForKeyBoardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(DetailCostVC.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(DetailCostVC.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -213,7 +209,7 @@ class DetailCostVC: UIViewController {
         } else {}
     }
     
-// #MARK: Controller view func
+    // MARK: Controller view func
     override func viewDidLoad() {
         super.viewDidLoad()
         baseSettings()
@@ -235,12 +231,11 @@ class DetailCostVC: UIViewController {
 
 }
 
-// #MARK: TableView methods
+// MARK: TableView extensions
 extension DetailCostVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return costList.count
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = paymentTable.dequeueReusableCell(withIdentifier: "costCell") as! CostCell
         cell.costNameLabel.text = costList[indexPath.row].name
@@ -251,11 +246,9 @@ extension DetailCostVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         50
     }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         paymentTable.deselectRow(at: indexPath, animated: true)
     }
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let cost = costList[indexPath.row]
@@ -264,6 +257,4 @@ extension DetailCostVC: UITableViewDataSource, UITableViewDelegate {
             paymentTable.deleteRows(at: [indexPath], with: .bottom)
         }
     }
-    
-    
 }

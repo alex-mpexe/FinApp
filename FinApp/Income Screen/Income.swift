@@ -12,8 +12,5 @@ class Income: Object {
     
     @objc dynamic var amount = String()
     @objc dynamic var date = String()
-    
-    
-    
 
 }

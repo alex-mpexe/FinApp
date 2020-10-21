@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8A3D9D05253F226B00FB31CC /* CategoryChartCostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */; };
+		8A3D9D1025404C6400FB31CC /* IncomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D9D0F25404C6400FB31CC /* IncomeTableViewCell.swift */; };
 		8A62998E253722CE008C962E /* GraphVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62998D253722CE008C962E /* GraphVC.swift */; };
 		8A694B442534660200089BF7 /* CostsMainScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A694B432534660200089BF7 /* CostsMainScreenVC.swift */; };
 		8A694B472534874200089BF7 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A694B462534874200089BF7 /* CategoryTableViewCell.swift */; };
@@ -18,7 +19,6 @@
 		8A9A6982252DEFF9000C9F64 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A9A6980252DEFF9000C9F64 /* Main.storyboard */; };
 		8A9A6984252DEFFD000C9F64 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A9A6983252DEFFD000C9F64 /* Assets.xcassets */; };
 		8A9A6987252DEFFD000C9F64 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A9A6985252DEFFD000C9F64 /* LaunchScreen.storyboard */; };
-		8A9A699E252E06B1000C9F64 /* IncomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9A699D252E06B1000C9F64 /* IncomeTableViewCell.swift */; };
 		8A9A69A1252E075B000C9F64 /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9A69A0252E075B000C9F64 /* Income.swift */; };
 		8AD0D8FE2535E925005A31A5 /* CostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AD0D8FD2535E925005A31A5 /* CostCell.swift */; };
 		F0DE625523044EFB1CBA9EB3 /* Pods_FinApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9AE6806452C900D95071EC /* Pods_FinApp.framework */; };
@@ -27,6 +27,7 @@
 /* Begin PBXFileReference section */
 		2A9AE6806452C900D95071EC /* Pods_FinApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryChartCostVC.swift; sourceTree = "<group>"; };
+		8A3D9D0F25404C6400FB31CC /* IncomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncomeTableViewCell.swift; sourceTree = "<group>"; };
 		8A62998D253722CE008C962E /* GraphVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphVC.swift; sourceTree = "<group>"; };
 		8A694B432534660200089BF7 /* CostsMainScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostsMainScreenVC.swift; sourceTree = "<group>"; };
 		8A694B462534874200089BF7 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -39,7 +40,6 @@
 		8A9A6983252DEFFD000C9F64 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8A9A6986252DEFFD000C9F64 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A9A6988252DEFFD000C9F64 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8A9A699D252E06B1000C9F64 /* IncomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IncomeTableViewCell.swift; path = FinApp/IncomeTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		8A9A69A0252E075B000C9F64 /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
 		8AD0D8FD2535E925005A31A5 /* CostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostCell.swift; sourceTree = "<group>"; };
 		A06737AD493298233C5D9950 /* Pods-FinApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinApp.release.xcconfig"; path = "Target Support Files/Pods-FinApp/Pods-FinApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +75,44 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8A3D9D0925404B1600FB31CC /* Income Screen */ = {
+			isa = PBXGroup;
+			children = (
+				8A9A69A0252E075B000C9F64 /* Income.swift */,
+				8A9A697E252DEFF9000C9F64 /* MainScreenViewController.swift */,
+				8A3D9D0F25404C6400FB31CC /* IncomeTableViewCell.swift */,
+			);
+			path = "Income Screen";
+			sourceTree = "<group>";
+		};
+		8A3D9D0A25404B3F00FB31CC /* Cost Screen */ = {
+			isa = PBXGroup;
+			children = (
+				8A694B432534660200089BF7 /* CostsMainScreenVC.swift */,
+				8A694B462534874200089BF7 /* CategoryTableViewCell.swift */,
+				8A3D9D0B25404B5000FB31CC /* Detail Costs */,
+			);
+			path = "Cost Screen";
+			sourceTree = "<group>";
+		};
+		8A3D9D0B25404B5000FB31CC /* Detail Costs */ = {
+			isa = PBXGroup;
+			children = (
+				8AD0D8FD2535E925005A31A5 /* CostCell.swift */,
+				8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */,
+				8A694B492534A1E600089BF7 /* DetailCostVC.swift */,
+			);
+			path = "Detail Costs";
+			sourceTree = "<group>";
+		};
+		8A3D9D0C25404B9A00FB31CC /* Chart Screen */ = {
+			isa = PBXGroup;
+			children = (
+				8A62998D253722CE008C962E /* GraphVC.swift */,
+			);
+			path = "Chart Screen";
+			sourceTree = "<group>";
+		};
 		8A9A696E252DEFF9000C9F64 = {
 			isa = PBXGroup;
 			children = (
@@ -96,18 +134,12 @@
 		8A9A6979252DEFF9000C9F64 /* FinApp */ = {
 			isa = PBXGroup;
 			children = (
-				8A9A69A0252E075B000C9F64 /* Income.swift */,
-				8A9A697E252DEFF9000C9F64 /* MainScreenViewController.swift */,
-				8A694B432534660200089BF7 /* CostsMainScreenVC.swift */,
+				8A3D9D0C25404B9A00FB31CC /* Chart Screen */,
+				8A3D9D0A25404B3F00FB31CC /* Cost Screen */,
+				8A3D9D0925404B1600FB31CC /* Income Screen */,
 				8A9A697A252DEFF9000C9F64 /* AppDelegate.swift */,
-				8A9A699D252E06B1000C9F64 /* IncomeTableViewCell.swift */,
 				8A9A697C252DEFF9000C9F64 /* SceneDelegate.swift */,
 				8A9A6980252DEFF9000C9F64 /* Main.storyboard */,
-				8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */,
-				8A62998D253722CE008C962E /* GraphVC.swift */,
-				8A694B492534A1E600089BF7 /* DetailCostVC.swift */,
-				8AD0D8FD2535E925005A31A5 /* CostCell.swift */,
-				8A694B462534874200089BF7 /* CategoryTableViewCell.swift */,
 				8A9A6983252DEFFD000C9F64 /* Assets.xcassets */,
 				8A9A6985252DEFFD000C9F64 /* LaunchScreen.storyboard */,
 				8A9A6988252DEFFD000C9F64 /* Info.plist */,
@@ -231,10 +263,10 @@
 			files = (
 				8A694B442534660200089BF7 /* CostsMainScreenVC.swift in Sources */,
 				8A9A697F252DEFF9000C9F64 /* MainScreenViewController.swift in Sources */,
+				8A3D9D1025404C6400FB31CC /* IncomeTableViewCell.swift in Sources */,
 				8A694B4A2534A1E600089BF7 /* DetailCostVC.swift in Sources */,
 				8AD0D8FE2535E925005A31A5 /* CostCell.swift in Sources */,
 				8A9A697B252DEFF9000C9F64 /* AppDelegate.swift in Sources */,
-				8A9A699E252E06B1000C9F64 /* IncomeTableViewCell.swift in Sources */,
 				8A694B472534874200089BF7 /* CategoryTableViewCell.swift in Sources */,
 				8A9A69A1252E075B000C9F64 /* Income.swift in Sources */,
 				8A62998E253722CE008C962E /* GraphVC.swift in Sources */,

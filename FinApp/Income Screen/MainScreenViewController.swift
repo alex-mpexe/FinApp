@@ -9,31 +9,25 @@ import UIKit
 import RealmSwift
 
 
-class User: Object {
-    @objc dynamic var moneySumm = Int()
-}
-
 class MainScreenViewController: UIViewController {
     
-    var isUserCreated = false
-    
+    // MARK: Basic Variables
     private let realm = try! Realm()
     var incomeData: [Income] = []
-    
+    var costData: Results<Cost>?
     var isTapped = false
-    
     var moneySumm = 0 {
         didSet {
             currentMoneyBalance.text = "\(String(moneySumm)) Р"
-            
-            try! realm.write {
-                let user = getUser()
-                user.moneySumm = moneySumm
+            if moneySumm < 0 {
+                currentMoneyBalance.textColor = UIColor.red
+            } else {
+                currentMoneyBalance.textColor = UIColor.white
             }
         }
     }
 
-    
+    // MARK: IBOutlets
     @IBOutlet weak var tableBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var incomeTable: UITableView!
     @IBOutlet weak var currentMoneyBalance: UILabel!
@@ -41,23 +35,8 @@ class MainScreenViewController: UIViewController {
     @IBOutlet weak var addIncomeButton: UIButton!
     @IBOutlet weak var shadowLockView: UIView!
     
-    func getUser() -> User{
-        let user = realm.objects(User.self).map {$0}[0]
-        return user
-    }
-    
-    // MARK: User Creation
-    
-    func createUser(){
-        let user = User()
-        try! realm.write {
-            realm.add(user)
-            isUserCreated = true
-        }
-    }
-    
+
     // MARK: Save Income Function
-    
     func saveIncome(withSumm summ: String) {
         let income = Income()
         let date = Date()
@@ -73,6 +52,7 @@ class MainScreenViewController: UIViewController {
         }
     }
     
+    // MARK: Parse Date method
     func parseDate(withDate date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
@@ -83,13 +63,13 @@ class MainScreenViewController: UIViewController {
         return stringDate
     }
     
-    func changeState(){
+    // MARK: Change state method
+    func changeState() {
         summTextField.isHidden = !summTextField.isHidden
         shadowLockView.isHidden = !shadowLockView.isHidden
     }
     
     // MARK: Add Income Button function
-    
     @IBAction func addIncomeAction(_ sender: Any) {
         if summTextField.isHidden {
             changeState()
@@ -109,40 +89,50 @@ class MainScreenViewController: UIViewController {
         }
     }
     
-    deinit {
-        removeKeyboardNotifications()
+    // MARK: Update Money Summ
+    func updateMoneySumm () {
+        let incomeSummList = realm.objects(Income.self).map {$0.amount}
+        let costsSummList = realm.objects(Cost.self).map {$0.summ}
+        var costsSumm = 0
+        var incomeSumm = 0
+        if incomeSummList.count != 0{
+            for income in incomeSummList { incomeSumm += Int(income)! }
+        }
+        if costsSummList.count != 0 {
+            for cost in costsSummList { costsSumm += cost }
+        }
+        moneySumm = incomeSumm - costsSumm
     }
     
-    // MARK: ViewDidLoad function
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if !isUserCreated { createUser() }
-        
-        incomeData = realm.objects(Income.self).map {$0}
-        let user = getUser()
-        moneySumm = user.moneySumm
-        
+    // MARK: Base Settings
+    func baseSettings() {
         addIncomeButton.layer.cornerRadius = 20
-        currentMoneyBalance.text = "\(String(moneySumm)) Р"
-        
         incomeTable.delegate = self
         incomeTable.dataSource = self
-        
+        currentMoneyBalance.text = "\(String(moneySumm)) Р"
+    }
+    
+    // MARK: Loading data from cache
+    func loadFromCache() {
+        incomeData = realm.objects(Income.self).map {$0}
+        costData = realm.objects(Cost.self)
+    }
+    
+    // MARK: ViewController methods
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        baseSettings()
+        loadFromCache()
+        updateMoneySumm()
         addTapGestureToHideKeyboard()
-        
-        
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(MainScreenViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(MainScreenViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        loadFromCache()
+        updateMoneySumm()
+        registerForKeyBoardNotifications()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -150,15 +140,17 @@ class MainScreenViewController: UIViewController {
         removeKeyboardNotifications()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.dismiss(animated: true, completion: nil)
-    }
 
-    // MARK: Keyboard functions
-    
+    // MARK: Keyboard methods
     func removeKeyboardNotifications(){
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func registerForKeyBoardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(MainScreenViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(MainScreenViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     func addTapGestureToHideKeyboard() {
@@ -170,7 +162,6 @@ class MainScreenViewController: UIViewController {
         summTextField.resignFirstResponder()
         isTapped = true
     }
-    
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
