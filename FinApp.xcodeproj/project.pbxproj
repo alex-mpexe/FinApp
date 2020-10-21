@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A3D9D05253F226B00FB31CC /* CategoryChartCostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */; };
 		8A62998E253722CE008C962E /* GraphVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A62998D253722CE008C962E /* GraphVC.swift */; };
 		8A694B442534660200089BF7 /* CostsMainScreenVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A694B432534660200089BF7 /* CostsMainScreenVC.swift */; };
 		8A694B472534874200089BF7 /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A694B462534874200089BF7 /* CategoryTableViewCell.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		2A9AE6806452C900D95071EC /* Pods_FinApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryChartCostVC.swift; sourceTree = "<group>"; };
 		8A62998D253722CE008C962E /* GraphVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphVC.swift; sourceTree = "<group>"; };
 		8A694B432534660200089BF7 /* CostsMainScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostsMainScreenVC.swift; sourceTree = "<group>"; };
 		8A694B462534874200089BF7 /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				8A9A699D252E06B1000C9F64 /* IncomeTableViewCell.swift */,
 				8A9A697C252DEFF9000C9F64 /* SceneDelegate.swift */,
 				8A9A6980252DEFF9000C9F64 /* Main.storyboard */,
+				8A3D9D04253F226B00FB31CC /* CategoryChartCostVC.swift */,
 				8A62998D253722CE008C962E /* GraphVC.swift */,
 				8A694B492534A1E600089BF7 /* DetailCostVC.swift */,
 				8AD0D8FD2535E925005A31A5 /* CostCell.swift */,
@@ -236,6 +239,7 @@
 				8A9A69A1252E075B000C9F64 /* Income.swift in Sources */,
 				8A62998E253722CE008C962E /* GraphVC.swift in Sources */,
 				8A9A697D252DEFF9000C9F64 /* SceneDelegate.swift in Sources */,
+				8A3D9D05253F226B00FB31CC /* CategoryChartCostVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

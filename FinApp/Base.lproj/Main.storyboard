@@ -194,7 +194,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWs-CL-MyY">
                                         <rect key="frame" x="0.0" y="0.0" width="61" height="28"/>
-                                        <color key="backgroundColor" red="0.29862815440000001" green="0.36561416949999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" title="неделя">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -205,7 +205,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WY7-UV-WSU">
                                         <rect key="frame" x="100" y="0.0" width="55" height="28"/>
-                                        <color key="backgroundColor" red="0.29862815440000001" green="0.36561416949999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" title="месяц">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -216,7 +216,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UEg-Dp-IA6">
                                         <rect key="frame" x="194" y="0.0" width="67" height="28"/>
-                                        <color key="backgroundColor" red="0.29862815440000001" green="0.36561416949999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" title="квартал">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -227,7 +227,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YMS-Yp-q1h">
                                         <rect key="frame" x="300" y="0.0" width="35" height="28"/>
-                                        <color key="backgroundColor" red="0.29862815440000001" green="0.36561416949999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
                                         <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                         <state key="normal" title="все">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -658,6 +658,97 @@
             </objects>
             <point key="canvasLocation" x="804" y="635"/>
         </scene>
+        <!--График-->
+        <scene sceneID="MUe-xW-Jor">
+            <objects>
+                <viewController storyboardIdentifier="categoryChart" id="oOy-OH-3sd" customClass="CategoryChartCostVC" customModule="FinApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="V0v-og-qpt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K1w-he-Hm4" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="30" y="108" width="315" height="315"/>
+                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="K1w-he-Hm4" secondAttribute="height" multiplier="1:1" id="1ST-cW-sgm"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="H8T-Hn-eXH">
+                                <rect key="frame" x="20" y="50" width="335" height="28"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8LX-6m-EPH">
+                                        <rect key="frame" x="0.0" y="0.0" width="61" height="28"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" title="неделя">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="weekButtonPressed:" destination="oOy-OH-3sd" eventType="touchUpInside" id="PPu-tO-AV4"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HkF-y6-aFh">
+                                        <rect key="frame" x="100" y="0.0" width="55" height="28"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" title="месяц">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="monthButtonPressed:" destination="oOy-OH-3sd" eventType="touchUpInside" id="aR4-wF-5h6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4p-w4-KKI">
+                                        <rect key="frame" x="194" y="0.0" width="67" height="28"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" title="квартал">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="quarterButtonPressed:" destination="oOy-OH-3sd" eventType="touchUpInside" id="PUK-hU-kqR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3fj-nn-Nii">
+                                        <rect key="frame" x="300" y="0.0" width="35" height="28"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" title="все">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="allDatesButtonPressed:" destination="oOy-OH-3sd" eventType="touchUpInside" id="aBL-Q7-rko"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Sxw-kv-tyG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="K1w-he-Hm4" firstAttribute="top" secondItem="H8T-Hn-eXH" secondAttribute="bottom" constant="30" id="02P-0k-Q3f"/>
+                            <constraint firstItem="Sxw-kv-tyG" firstAttribute="trailing" secondItem="K1w-he-Hm4" secondAttribute="trailing" constant="30" id="89d-pN-7Fl"/>
+                            <constraint firstItem="H8T-Hn-eXH" firstAttribute="leading" secondItem="Sxw-kv-tyG" secondAttribute="leading" constant="20" id="Bhn-xY-VXL"/>
+                            <constraint firstItem="H8T-Hn-eXH" firstAttribute="top" secondItem="Sxw-kv-tyG" secondAttribute="top" constant="50" id="YyU-5H-gWB"/>
+                            <constraint firstItem="K1w-he-Hm4" firstAttribute="leading" secondItem="Sxw-kv-tyG" secondAttribute="leading" constant="30" id="g5z-nG-Hy7"/>
+                            <constraint firstItem="Sxw-kv-tyG" firstAttribute="trailing" secondItem="H8T-Hn-eXH" secondAttribute="trailing" constant="20" id="pMF-yy-Wjk"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="График" image="analize" id="7yx-Ow-eG3">
+                        <inset key="imageInsets" minX="0.0" minY="10" maxX="0.0" maxY="10"/>
+                    </tabBarItem>
+                    <connections>
+                        <outlet property="allButton" destination="3fj-nn-Nii" id="lbj-3H-3nm"/>
+                        <outlet property="lineChartView" destination="K1w-he-Hm4" id="Tbf-bP-blV"/>
+                        <outlet property="monthButton" destination="HkF-y6-aFh" id="jjG-b6-Fo0"/>
+                        <outlet property="quarterButton" destination="w4p-w4-KKI" id="atA-jg-fcF"/>
+                        <outlet property="weekButton" destination="8LX-6m-EPH" id="ClS-51-Es8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bBR-9R-JfQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3260" y="635"/>
+        </scene>
     </scenes>
     <resources>
         <image name="analize" width="50" height="50"/>
@@ -665,6 +756,9 @@
         <image name="income" width="50" height="50"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

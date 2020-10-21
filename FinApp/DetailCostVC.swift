@@ -67,6 +67,11 @@ class DetailCostVC: UIViewController {
     
     @IBAction func graphPaymentButtonPressen(_ sender: Any) {
         // Button "График платежей" action
+        guard let vc = storyboard?.instantiateViewController(identifier: "categoryChart") as? CategoryChartCostVC else {
+            return
+        }
+        vc.category = category
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 // #MARK: Base Settings

@@ -9,7 +9,7 @@ import UIKit
 import Charts
 import RealmSwift
 
-private class ChartDataFormatter: IAxisValueFormatter {
+class ChartDataFormatter: IAxisValueFormatter {
     
     var data: [String] = []
     
@@ -71,6 +71,12 @@ class GraphVC: UIViewController, ChartViewDelegate {
         case income
         case cost
     }
+    enum SortType {
+        case week
+        case month
+        case quarter
+        case all
+    }
     
     var incomeRealmData: Results<Income>?
     var costsRealmData: Results<Cost>? {didSet {createPoints(incomeData: incomeRealmData!, costData: costsRealmData!)}}
@@ -79,7 +85,8 @@ class GraphVC: UIViewController, ChartViewDelegate {
             lineChartView.xAxis.valueFormatter = ChartDataFormatter(dataPoints: chartPoints.map {$0.date!})
         }
     }
-    var chartEntryDataSet: [ChartDataEntry] = []
+    let calendar = Calendar.current
+    let today = Date()
     
     
 // #MARK: Outlets
@@ -91,14 +98,108 @@ class GraphVC: UIViewController, ChartViewDelegate {
     
 // #MARK: Sort button actions
     @IBAction func weekButtonPressed(_ sender: Any) {
+        createPoints(incomeData: incomeRealmData!, costData: costsRealmData!)
+        var newPoints: [Point] = []
+        var firstDayOfWeek = calendar.date(byAdding: .weekOfMonth, value: -1, to: today)!
+        while firstDayOfWeek <= today {
+            let filteredPoints = updatePoints(date: parseDate(withDate: firstDayOfWeek))
+            if filteredPoints.count != 0 { newPoints += filteredPoints }
+            firstDayOfWeek = calendar.date(byAdding: .day, value: 1, to: firstDayOfWeek)!
+        }
+        chartPoints = newPoints
+        updateChart()
+        self.lineChartView.notifyDataSetChanged()
+        changeButtonState(type: .week)
     }
     @IBAction func monthButtonPressed(_ sender: Any) {
+        createPoints(incomeData: incomeRealmData!, costData: costsRealmData!)
+        var newPoints: [Point] = []
+        var lastMonthDay = calendar.date(byAdding: .month, value: -1, to: today)!
+        while lastMonthDay <= today {
+            let filteredPoints = updatePoints(date: parseDate(withDate: lastMonthDay))
+            if filteredPoints.count != 0 { newPoints += filteredPoints }
+            lastMonthDay = calendar.date(byAdding: .day, value: 1, to: lastMonthDay)!
+        }
+        chartPoints = newPoints
+        updateChart()
+        self.lineChartView.notifyDataSetChanged()
+        changeButtonState(type: .month)
+        
     }
     @IBAction func quarterButtonPressed(_ sender: Any) {
+        createPoints(incomeData: incomeRealmData!, costData: costsRealmData!)
+        var newPoints: [Point] = []
+        var lastMonthDay = calendar.date(byAdding: .month, value: -2, to: today)!
+        while lastMonthDay <= today {
+            let filteredPoints = updatePoints(date: parseDate(withDate: lastMonthDay))
+            if filteredPoints.count != 0 { newPoints += filteredPoints }
+            lastMonthDay = calendar.date(byAdding: .day, value: 1, to: lastMonthDay)!
+        }
+        chartPoints = newPoints
+        updateChart()
+        self.lineChartView.notifyDataSetChanged()
+        changeButtonState(type: .quarter)
     }
     @IBAction func allDatesButtonPressed(_ sender: Any) {
+        createPoints(incomeData: incomeRealmData!, costData: costsRealmData!)
+        updateChart()
+        self.lineChartView.notifyDataSetChanged()
+        changeButtonState(type: .all)
+        
     }
     
+// #MARK: Changing button states
+    func changeButtonState(type: SortType){
+        switch type {
+        case .week:
+            allButton.isEnabled = true
+            allButton.backgroundColor = .systemBlue
+            weekButton.isEnabled = false
+            weekButton.backgroundColor = .gray
+            monthButton.isEnabled = true
+            monthButton.backgroundColor = .systemBlue
+            quarterButton.isEnabled = true
+            quarterButton.backgroundColor = .systemBlue
+        case .month:
+            allButton.isEnabled = true
+            allButton.backgroundColor = .systemBlue
+            weekButton.isEnabled = true
+            weekButton.backgroundColor = .systemBlue
+            monthButton.isEnabled = false
+            monthButton.backgroundColor = .gray
+            quarterButton.isEnabled = true
+            quarterButton.backgroundColor = .systemBlue
+        case .quarter:
+            allButton.isEnabled = true
+            allButton.backgroundColor = .systemBlue
+            weekButton.isEnabled = true
+            weekButton.backgroundColor = .systemBlue
+            monthButton.isEnabled = true
+            monthButton.backgroundColor = .systemBlue
+            quarterButton.isEnabled = false
+            quarterButton.backgroundColor = .gray
+        case .all:
+            allButton.isEnabled = false
+            allButton.backgroundColor = .gray
+            weekButton.isEnabled = true
+            weekButton.backgroundColor = .systemBlue
+            monthButton.isEnabled = true
+            monthButton.backgroundColor = .systemBlue
+            quarterButton.isEnabled = true
+            quarterButton.backgroundColor = .systemBlue
+        }
+    }
+    
+// #MARK: Update Points
+    func updatePoints(date: String) -> [Point] {
+        var points: [Point] = []
+        for point in chartPoints {
+            if point.date == date {
+                points.append(point)
+            }
+        }
+        return points
+    }
     
     
     
@@ -112,6 +213,7 @@ class GraphVC: UIViewController, ChartViewDelegate {
         lineChartView.xAxis.labelPosition = .bottom
         lineChartView.rightAxis.enabled = false
         lineChartView.legend.enabled = false
+        changeButtonState(type: .all)
         lineChartView.xAxis.valueFormatter = ChartDataFormatter(dataPoints: chartPoints.map {$0.date!})
         
         
@@ -182,16 +284,17 @@ class GraphVC: UIViewController, ChartViewDelegate {
             }
         }
         let chartData = LineChartData()
-        let incomeLine = LineChartDataSet(entries: incomeDataEntry, label: "Расходы")
+        let incomeLine = LineChartDataSet(entries: incomeDataEntry, label: "Доходы")
         incomeLine.setColor(.green)
         incomeLine.circleColors = [UIColor(ciColor: .green)]
         chartData.addDataSet(incomeLine)
-        let costLine = LineChartDataSet(entries: costDataEntry, label: "Доходы")
+        let costLine = LineChartDataSet(entries: costDataEntry, label: "Расходы")
         costLine.setColor(.red)
         costLine.circleColors = [UIColor(ciColor: .red)]
         chartData.addDataSet(costLine)
         
         self.lineChartView.data = chartData
+        self.lineChartView.notifyDataSetChanged()
         
     }
     
@@ -210,7 +313,7 @@ class GraphVC: UIViewController, ChartViewDelegate {
         loadDataFromCache()
         self.lineChartView.delegate = self
         updateChart()
-        self.lineChartView.notifyDataSetChanged()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
