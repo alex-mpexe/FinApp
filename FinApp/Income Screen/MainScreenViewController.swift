@@ -22,7 +22,14 @@ class MainScreenViewController: UIViewController {
             if moneySumm < 0 {
                 currentMoneyBalance.textColor = UIColor.red
             } else {
-                currentMoneyBalance.textColor = UIColor.white
+                currentMoneyBalance.textColor =  UIColor { tc in
+                    switch tc.userInterfaceStyle {
+                    case .dark:
+                        return UIColor.white
+                    default:
+                        return UIColor.black
+                    }
+                }
             }
         }
     }
@@ -111,6 +118,7 @@ class MainScreenViewController: UIViewController {
         incomeTable.delegate = self
         incomeTable.dataSource = self
         currentMoneyBalance.text = "\(String(moneySumm)) Р"
+        
     }
     
     // MARK: Loading data from cache
